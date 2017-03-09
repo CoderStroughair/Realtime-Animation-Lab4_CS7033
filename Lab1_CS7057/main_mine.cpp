@@ -39,10 +39,12 @@ const char* atlas_meta = "../freemono.meta";
 float fontSize = 25.0f;
 int textID = -1;
 bool pause = false;
-int mode = 0;
-bool changeMode = false;
+bool mode = false;
 //Hand skeleton;
 Torso skeleton;
+
+vec3 point = vec3(6.0, 5.0, 0.0);
+float xaxis = 0, yaxis = 0, zaxis = 0;
 
 /*----------------------------------------------------------------------------
 						FUNCTION DEFINITIONS
@@ -70,7 +72,7 @@ void init()
 	boneID.init(BONE_MESH);
 	torsoID.init(TORSO_MESH);
 	skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
-	skeleton.moveAnalytical(vec2(2.0, 1.0));
+	skeleton.updateJointsCCD(point);
 }
 
 void display() 
@@ -109,12 +111,17 @@ void updateScene() {
 		output += "Pitch: " + to_string(cam.pitch) + "\n";
 		output += "Yaw: " + to_string(cam.yaw) + "\n";
 		output += "Roll: " + to_string(cam.roll) + "\n";
-		if (changeMode)
-			output += "Changing Modes, please Wait...\n";
+
 		update_text(textID, output.c_str());
 		if (!pause)
 		{
-
+			point.v[0] += 0.1 * xaxis;
+			point.v[1] += 0.1 * yaxis;
+			point.v[2] += 0.1 * zaxis;
+			//if (mode)
+			//	skeleton.updateJointsCCD(point);
+			//else
+				skeleton.updateJoints(point);
 		}
 	}
 	
@@ -130,33 +137,33 @@ void keypress(unsigned char key, int x, int y) {
 		break;
 	case('w'):
 	case('W'):
-		frontCam = 1;
-		printf("Moving Forward\n");
+		yaxis = 1;
+		//printf("Moving Forward\n");
 		break;
 	case('s'):
 	case('S'):
-		frontCam = -1;
-		printf("Moving Backward\n");
+		yaxis = -1;
+		//printf("Moving Backward\n");
 		break;
 	case('a'):
 	case('A'):
-		sideCam = -1;
-		printf("Moving Left\n");
+		xaxis = -1;
+		//printf("Moving Left\n");
 		break;
 	case('d'):
 	case('D'):
-		sideCam = 1;
-		printf("Moving Right\n");
+		xaxis = 1;
+		//printf("Moving Right\n");
 		break;
 	case('q'):
 	case('Q'):
-		rolCam = -1;
-		printf("Spinning Negative Roll\n");
+		zaxis = -1;
+		//printf("Spinning Negative Roll\n");
 		break;
 	case('e'):
 	case('E'):
-		rolCam = 1;
-		printf("Spinning Positive Roll\n");
+		zaxis = 1;
+		//printf("Spinning Positive Roll\n");
 		break;
 	}
 }
@@ -168,19 +175,19 @@ void keypressUp(unsigned char key, int x, int y){
 	case('W'):
 	case('s'):
 	case('S'):
-		frontCam = 0;
+		yaxis = 0;
 		break;
 	case('a'):
 	case('A'):
 	case('d'):
 	case('D'):
-		sideCam = 0;
+		xaxis = 0;
 		break;
 	case('q'):
 	case('Q'):
 	case('e'):
 	case('E'):
-		rolCam = 0;
+		zaxis = 0;
 		break;
 	case(' '):
 		pause = !pause;
@@ -196,20 +203,32 @@ void specialKeypress(int key, int x, int y){
 		speed = 4;
 		break;
 	case (GLUT_KEY_LEFT):
-		printf("Spinning Negative Yaw\n");
+		//printf("Spinning Negative Yaw\n");
 		yawCam = -1;
 		break;
 	case (GLUT_KEY_RIGHT):
-		printf("Spinning Positive Yaw\n");
+		//printf("Spinning Positive Yaw\n");
 		yawCam = 1;
 		break;
 	case (GLUT_KEY_UP):
-		printf("Spinning Positive Pit\n");
+		//printf("Spinning Positive Pit\n");
 		pitCam = 1;
 		break;
 	case (GLUT_KEY_DOWN):
-		printf("Spinning Negative Pit\n");
+		//printf("Spinning Negative Pit\n");
 		pitCam = -1;
+		break;
+	case(GLUT_KEY_F2):
+		xaxis = 1;
+		break;
+	case(GLUT_KEY_F3):
+		xaxis = -1;
+		break;
+	case(GLUT_KEY_F4):
+		yaxis = 1;
+		break;
+	case(GLUT_KEY_F5):
+		yaxis = -1;
 		break;
 	}
 }
@@ -230,7 +249,15 @@ void specialKeypressUp(int key, int x, int y){
 		pitCam = 0;
 		break;
 	case(GLUT_KEY_F1):
-		changeMode = true;
+		mode = !mode;
+		break;
+	case(GLUT_KEY_F2):
+	case(GLUT_KEY_F3):
+		xaxis = 0;
+		break;
+	case(GLUT_KEY_F4):
+	case(GLUT_KEY_F5):
+		yaxis = 0;
 		break;
 	}
 }
@@ -287,6 +314,23 @@ void drawloop(mat4 view, mat4 proj, GLuint framebuffer)
 
 	mat4 model = identity_mat4();
 
+	vec3 Ls = vec3(0.6f, 0.3f, 0.6f);	//Specular Reflected Light
+	vec3 Ld = vec3(0.8f, 0.8f, 0.8f);	//Diffuse Surface Reflectance
+	vec3 La = vec3(0.8f, 0.8f, 0.8f);	//Ambient Reflected Light
+	vec3 light = vec3(1.8*cos(0.0f), 1.8*sin(0.0f) + 1.0f, -5.0f);//light source location
+	vec3 coneDirection = light + vec3(0.0f, -1.0f, 0.0f);
+	float coneAngle = 40.0f;
+	// object colour
+	vec3 Ks = vec3(0.01f, 0.01f, 0.01f); // specular reflectance
+	vec3 Kd = PURPLE;
+	vec3 Ka = BLUE*0.2; // ambient reflectance
+	float specular_exponent = 100.0f; //specular exponent - size of the specular elements
+
 	drawCubeMap(cubeMapShaderID, cubeMapID.tex, view, proj, model, vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), cam, cubeMapID, GL_TRIANGLES);
 	skeleton.drawTorso(view, proj, identity_mat4(), noTextureShaderID, cam);
+	model = translate(identity_mat4(), vec3(point.v[0], point.v[1], point.v[2]));
+	drawObject(noTextureShaderID, view, proj, model, light, Ls, La, Ld, Ks, Kd, Ka, specular_exponent, cam, cubeID, coneAngle, coneDirection, GL_TRIANGLES);
+
+	model = translate(identity_mat4(), skeleton.left.hand.palm->getPosition());
+	drawObject(noTextureShaderID, view, proj, model, light, Ls, La, Ld, Ks, BLUE, Ka, specular_exponent, cam, cubeID, coneAngle, coneDirection, GL_TRIANGLES);
 }

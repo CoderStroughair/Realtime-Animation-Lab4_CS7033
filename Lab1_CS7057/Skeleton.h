@@ -19,9 +19,12 @@ public:
 	void bendBone(GLfloat rotation);
 	void rollBone(GLfloat rotation);
 	void pivotBone(GLfloat rotation);
+	void bendPivotBone(GLfloat rot1, GLfloat rot2);
+	void pivotBendBone(GLfloat rot1, GLfloat rot2);
+	mat4 getTransformMatrix();
+	vec3 getPosition();
 	bool initialised = false;
 
-private:
 	vec4 up, right, forward;
 };
 
@@ -131,8 +134,44 @@ void Bone::pivotBone(GLfloat rotation)
 	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
 }
 
+void Bone::bendPivotBone(GLfloat rot1, GLfloat rot2)
+{
+	versor quat = quat_from_axis_rad(rot1, this->right.v[0], this->right.v[1], this->right.v[2]) * quat_from_axis_rad(rot2, this->up.v[0], this->up.v[1], this->up.v[2]);
+	orientation = orientation * quat;
+	this->rotMatrix = quat_to_mat4(this->orientation);
+	this->forward = this->rotMatrix * vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	this->right = this->rotMatrix * vec4(0.0f, 0.0f, 1.0f, 0.0f);
+	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
+}
+
+void Bone::pivotBendBone(GLfloat rot1, GLfloat rot2)
+{
+	versor quat = quat_from_axis_rad(rot2, this->up.v[0], this->up.v[1], this->up.v[2]) * quat_from_axis_rad(rot1, this->right.v[0], this->right.v[1], this->right.v[2]);
+	orientation = orientation * quat;
+	this->rotMatrix = quat_to_mat4(this->orientation);
+	this->forward = this->rotMatrix * vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	this->right = this->rotMatrix * vec4(0.0f, 0.0f, 1.0f, 0.0f);
+	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
+}
+
 #pragma endregion
 
+mat4 Bone::getTransformMatrix()
+{
+	mat4 global = identity_mat4();
+	if (parent)
+		global = parent->getTransformMatrix();
+	return global * localTransform * rotMatrix;
+
+}
+
+vec3 Bone::getPosition()
+{
+	mat4 global = identity_mat4();
+	if (parent)
+		global = parent->getTransformMatrix();
+	return global * localTransform * vec4(0.0, 0.0, 0.0, 1.0);
+}
 #pragma endregion
 
 #pragma region HAND
@@ -373,7 +412,8 @@ public:
 	Arm(Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger, Bone* root);
 	void drawArm(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam);
 
-	Bone* shoulder;
+	Bone* shoulderXY;
+	Bone* shoulderXZ;
 	Bone* upper;
 	Bone* elbow;
 	Bone* lower;
@@ -385,13 +425,14 @@ Arm::Arm() {};
 
 Arm::Arm(Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger, Bone* root)
 {
-	shoulder = new Bone(mJoint, root, identity_mat4());
-	upper = new Bone(mArm, shoulder, identity_mat4());
-	elbow = new Bone(mJoint, shoulder, identity_mat4());
+	shoulderXY = new Bone(mJoint, root, identity_mat4());
+	shoulderXZ = new Bone(mJoint, shoulderXY, identity_mat4());
+	upper = new Bone(mArm, shoulderXZ, identity_mat4());
+	elbow = new Bone(mJoint, upper, identity_mat4());
 	lower = new Bone(mArm, elbow, identity_mat4());
-	hand = Hand(mPalm, mFinger, elbow);
+	hand = Hand(mPalm, mFinger, lower);
 	hand.palm->localTransform = scale(hand.palm->localTransform, vec3(0.8, 0.8, 0.8));
-	hand.palm->localTransform = translate(hand.palm->localTransform, vec3(0.0, -4.0, 0.0));
+	hand.palm->localTransform = translate(hand.palm->localTransform, vec3(0.0, -3.0, 0.0));
 	hand.palm->bendBone(ONE_DEG_IN_RAD * 180.0f);
 	hand.palm->pivotBone(ONE_DEG_IN_RAD* -90.0f);
 };
@@ -411,11 +452,16 @@ public:
 	Torso();
 	Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger);
 	void drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam);
-	void moveAnalytical(vec2 point);
+	void moveAnalytical(vec3 point);
+	void moveAnalytical3D(vec3 point);
+	void updateJoints(vec3 point);
+	void updateJointsCCD(vec3 point);
 
-private:
+//private:
 	Bone* torso;
 	Arm left;
+	float theta1 = 0, theta2 = 0, theta3 = 0;
+	float l1, l2, l12, l22;
 };
 
 Torso::Torso() {};
@@ -424,10 +470,20 @@ Torso::Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger)
 {
 	torso = new Bone(mTorso, nullptr, identity_mat4(), true);
 	left = Arm(mArm, mJoint, mPalm, mFinger, torso);
-	left.shoulder->localTransform = translate(left.upper->localTransform, vec3(-2.5, 2.0, 0.0));
-	left.upper->localTransform = translate(left.upper->localTransform, vec3(-1.5, -1.7, 0.0));
-	left.elbow->localTransform = translate(left.lower->localTransform, vec3(-1.5, -3.2, 0.0));
+	left.shoulderXY->localTransform = translate(left.upper->localTransform, vec3(-2.5, 2.0, 0.0));
+	left.upper->rollBone(ONE_DEG_IN_RAD * -90);
+	left.upper->localTransform = translate(left.upper->localTransform, vec3(-2.0, 0.0, 0.0));
+	left.elbow->localTransform = translate(left.lower->localTransform, vec3(0.0, -1.5, 0.0));
 	left.lower->localTransform = translate(left.lower->localTransform, vec3(0.0, -1.5, 0.0));
+
+	vec3 shoulderPos = left.shoulderXY->getPosition();
+	vec3 elbowPos = left.elbow->getPosition();
+	vec3 palmPos = left.hand.palm->getPosition();
+
+	l12 = length2(elbowPos - shoulderPos);
+	l22 = length2(palmPos - elbowPos);
+	l1 = length(elbowPos - shoulderPos);
+	l2 = length(palmPos - elbowPos);
 }
 
 void Torso::drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam)
@@ -435,33 +491,97 @@ void Torso::drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shade
 	torso->drawBone(projection, view, modelGlobal, shaderID, cam);
 }
 
-void Torso::moveAnalytical(vec2 point)
+void Torso::moveAnalytical(vec3 point)
 {
-	//Solution currently only works in 2D, so the z-axis value is not passed to the function
+	vec3 shoulderPos = left.shoulderXY->getPosition();
+	vec3 position = point - shoulderPos;
+	position.v[2] = 0.0f;	//I don't care about the z-axis, so I'm going to zero it for the moment.
+	float d = length(position);
+	if (d > (l1 + l2 - 0.01f))
+	{
+		position = (position / d) * (l1 + l2 - 0.01f);
+		d = length(position);
+	}
+	else if (d < (l2 - l1+ 0.01f))
+	{
+		position = (position / d) * (l2 - l1 + 0.01f);
+		d = length(position);
+	}
 
-	//First, since the solution works by assuming that the first joint is at (0,0), we need to get the relative location of the end affector
-	mat4 shoulderTransform = this->left.shoulder->localTransform;
-	vec3 shoulderPos = vec3(shoulderTransform.m[12], shoulderTransform.m[13], shoulderTransform.m[14]);
-	vec3 posRelative = vec3(point.v[0] + shoulderPos.v[0], point.v[1] + shoulderPos.v[1], shoulderPos.v[2]);
+	if (position.v[1] > 0)
+	position.v[0] = -position.v[0];
 
-	//Next, assuming that neither of the joints are bent, we need to determine the angles that each joint needs to be at to match the end affector.
-	mat4 elbowTransform = this->left.elbow->localTransform;
-	vec3 elbowPos = vec3(elbowTransform.m[12], elbowTransform.m[13], elbowTransform.m[14]);
-	print(elbowPos);
-	float l1 = length(elbowPos);
+	float x2 = position.v[0] * position.v[0];
+	float y2 = position.v[1] * position.v[1];
 
-	mat4 palmTransform = this->left.hand.palm->localTransform;
-	vec3 palmPos = vec3(palmTransform.m[12], palmTransform.m[13], palmTransform.m[14]);
-	print(palmPos);
-	float l2 = length(palmPos);
-	float thetaT = acos(posRelative.v[0]/length(posRelative));
+	float thetaT = acos(position.v[0] / d);
 
-	float theta1num = (l1*l1) + (posRelative.v[0] * posRelative.v[0]) + (posRelative.v[1] * posRelative.v[1]) - (l2*l2);
-	float theta1dec = 2 * l1 * length(posRelative);
-	float theta1 = acos(theta1num / theta1dec);
+	float theta1num = l12 + x2 + y2 - l22;
+	float theta1den = 2 * l1 * d;
 
-	float theta2num = l1*l1 + l2*l2 - posRelative.v[0] * posRelative.v[0] + posRelative.v[1] * posRelative.v[1];
-	float theta2dec = 2 * l1 * l2;
-	float theta2 = acos(theta2num / theta2dec);
+	theta1 = acos(theta1num / theta1den) + thetaT;
+
+	if (position.v[1] < 0)
+		theta1 += ONE_DEG_IN_RAD * 180;
+
+	float theta2num = l12 + l22 - x2 - y2;
+	float theta2den = 2 * l1 * l2;
+
+	theta2 = acos(theta2num / theta2den) + ONE_DEG_IN_RAD * 180;
+}
+
+void Torso::moveAnalytical3D(vec3 point)	//Currently doesn't work unfortunately
+{
+	vec3 shoulderPos = left.shoulderXY->getPosition();
+	vec3 position = point - shoulderPos;
+
+	float distance = length(position);
+	if (distance > (l1 + l2 - 0.01f))
+	{
+		position = (position / distance) * (l1 + l2 - 0.01f);
+		distance = length(position);
+	}
+	else if (distance < (l2 - l1 + 0.01f))
+	{
+		position = (position / distance) * (l2 - l1 + 0.01f);
+		distance = length(position);
+	}
+
+	if (position.v[1] > 0)
+		position.v[0] = -position.v[0];
+
+	float x2 = position.v[0] * position.v[0];
+	float y2 = position.v[1] * position.v[1];
+
+	theta3 = atanf(position.v[0] / position.v[2]);
+
+	float l = sqrt(position.v[1] * position.v[1] + position.v[0] * position.v[0]);
+	float theta1a = acosf(position.v[1] / l);
+	float theta1bNum = l22 - l12 - l*l;
+	float theta1bDen = -2 * l1 * l;
+	float theta1b = acosf(theta1bNum / theta1bDen);
+	theta1 = theta1a + theta1b;
+
+	float theta2Num = l*l - l22 - l12;
+	float theta2Den = -2 * l1 * l2;
+	theta2 = acosf(theta2Num / theta2Den);
+
+}
+
+void Torso::updateJoints(vec3 point)
+{
+	left.elbow->bendBone(theta2);
+	left.shoulderXY->bendBone(theta1);
+
+	moveAnalytical(point);
+
+	left.shoulderXY->bendBone(-theta1);
+	left.elbow->bendBone(-theta2);
+}
+
+void Torso::updateJointsCCD(vec3 point)
+{
+	vec3 shoulderPos = left.shoulderXY->getPosition();
+	vec3 position = point - shoulderPos;
 }
 #pragma endregion
