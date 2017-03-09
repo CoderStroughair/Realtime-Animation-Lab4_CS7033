@@ -70,6 +70,7 @@ void init()
 	boneID.init(BONE_MESH);
 	torsoID.init(TORSO_MESH);
 	skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
+	skeleton.moveAnalytical(vec2(2.0, 1.0));
 }
 
 void display() 

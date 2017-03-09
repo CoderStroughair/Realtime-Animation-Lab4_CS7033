@@ -90,7 +90,7 @@ void Bone::drawBone(mat4 projection, mat4 view, mat4 modelGlobal, GLuint shaderI
 	vec3 Ka = BLUE*0.2; // ambient reflectance
 	float specular_exponent = 100.0f; //specular exponent - size of the specular elements
 
-	drawObjectDebug(shaderID, view, projection, modelLocal, light, Ls, La, Ld, Ks, Kd, Ka, specular_exponent, cam, mesh, coneAngle, coneDirection, GL_TRIANGLES);
+	drawObject(shaderID, view, projection, modelLocal, light, Ls, La, Ld, Ks, Kd, Ka, specular_exponent, cam, mesh, coneAngle, coneDirection, GL_TRIANGLES);
 	
 	
 	for (GLuint i = 0; i < this->children.size(); i++)
@@ -387,11 +387,13 @@ Arm::Arm(Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger, Bone* root)
 {
 	shoulder = new Bone(mJoint, root, identity_mat4());
 	upper = new Bone(mArm, shoulder, identity_mat4());
-	elbow = new Bone(mJoint, upper, identity_mat4());
+	elbow = new Bone(mJoint, shoulder, identity_mat4());
 	lower = new Bone(mArm, elbow, identity_mat4());
-	hand = Hand(mPalm, mFinger, lower);
-	hand.palm->localTransform = translate(hand.palm->localTransform, vec3(0.0, -2.0, 0.0));
+	hand = Hand(mPalm, mFinger, elbow);
+	hand.palm->localTransform = scale(hand.palm->localTransform, vec3(0.8, 0.8, 0.8));
+	hand.palm->localTransform = translate(hand.palm->localTransform, vec3(0.0, -4.0, 0.0));
 	hand.palm->bendBone(ONE_DEG_IN_RAD * 180.0f);
+	hand.palm->pivotBone(ONE_DEG_IN_RAD* -90.0f);
 };
 
 void Arm::drawArm(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam)
@@ -409,6 +411,7 @@ public:
 	Torso();
 	Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger);
 	void drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam);
+	void moveAnalytical(vec2 point);
 
 private:
 	Bone* torso;
@@ -423,7 +426,7 @@ Torso::Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger)
 	left = Arm(mArm, mJoint, mPalm, mFinger, torso);
 	left.shoulder->localTransform = translate(left.upper->localTransform, vec3(-2.5, 2.0, 0.0));
 	left.upper->localTransform = translate(left.upper->localTransform, vec3(-1.5, -1.7, 0.0));
-	left.elbow->localTransform = translate(left.lower->localTransform, vec3(0.0, -1.5, 0.0));
+	left.elbow->localTransform = translate(left.lower->localTransform, vec3(-1.5, -3.2, 0.0));
 	left.lower->localTransform = translate(left.lower->localTransform, vec3(0.0, -1.5, 0.0));
 }
 
@@ -432,4 +435,33 @@ void Torso::drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shade
 	torso->drawBone(projection, view, modelGlobal, shaderID, cam);
 }
 
+void Torso::moveAnalytical(vec2 point)
+{
+	//Solution currently only works in 2D, so the z-axis value is not passed to the function
+
+	//First, since the solution works by assuming that the first joint is at (0,0), we need to get the relative location of the end affector
+	mat4 shoulderTransform = this->left.shoulder->localTransform;
+	vec3 shoulderPos = vec3(shoulderTransform.m[12], shoulderTransform.m[13], shoulderTransform.m[14]);
+	vec3 posRelative = vec3(point.v[0] + shoulderPos.v[0], point.v[1] + shoulderPos.v[1], shoulderPos.v[2]);
+
+	//Next, assuming that neither of the joints are bent, we need to determine the angles that each joint needs to be at to match the end affector.
+	mat4 elbowTransform = this->left.elbow->localTransform;
+	vec3 elbowPos = vec3(elbowTransform.m[12], elbowTransform.m[13], elbowTransform.m[14]);
+	print(elbowPos);
+	float l1 = length(elbowPos);
+
+	mat4 palmTransform = this->left.hand.palm->localTransform;
+	vec3 palmPos = vec3(palmTransform.m[12], palmTransform.m[13], palmTransform.m[14]);
+	print(palmPos);
+	float l2 = length(palmPos);
+	float thetaT = acos(posRelative.v[0]/length(posRelative));
+
+	float theta1num = (l1*l1) + (posRelative.v[0] * posRelative.v[0]) + (posRelative.v[1] * posRelative.v[1]) - (l2*l2);
+	float theta1dec = 2 * l1 * length(posRelative);
+	float theta1 = acos(theta1num / theta1dec);
+
+	float theta2num = l1*l1 + l2*l2 - posRelative.v[0] * posRelative.v[0] + posRelative.v[1] * posRelative.v[1];
+	float theta2dec = 2 * l1 * l2;
+	float theta2 = acos(theta2num / theta2dec);
+}
 #pragma endregion
