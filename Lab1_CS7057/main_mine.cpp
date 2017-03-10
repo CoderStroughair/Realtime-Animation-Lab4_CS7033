@@ -41,11 +41,11 @@ float fontSize = 25.0f;
 int textID = -1;
 bool pause = false;
 bool mode = false;
-//Hand skeleton;
 Torso skeleton;
 
 vec3 point = vec3(6.0, 5.0, 0.0);
 float xaxis = 0, yaxis = 0, zaxis = 0;
+float a = 0, b = 0;
 
 /*----------------------------------------------------------------------------
 						FUNCTION DEFINITIONS
@@ -115,14 +115,35 @@ void updateScene() {
 		update_text(textID, output.c_str());
 		if (!pause)
 		{
-			point.v[0] += 0.1 * xaxis;
-			point.v[1] += 0.1 * yaxis;
-			point.v[2] += 0.1 * zaxis;
+			a += 1.0f;
+			b += 1.0f;
+			if (a > 360)
+				a = 0;
+			if (b > 360)
+				b = 0;
+			point.v[0] = 5 * sin(a * ONE_DEG_IN_RAD);
+			point.v[1] = 5 * cos(a * ONE_DEG_IN_RAD) + 10 * sin(b * ONE_DEG_IN_RAD);
+			point.v[2] = 5 * cos(b * ONE_DEG_IN_RAD);
+			if (skeleton.isUnstable(point))
+			{
+				skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
+			}
 			if (mode)
+			{
+				point.v[0] = 5 * sin(a * ONE_DEG_IN_RAD);
+				point.v[1] = 5 * cos(a * ONE_DEG_IN_RAD) + 10 * sin(b * ONE_DEG_IN_RAD);
+				point.v[2] = 5 * cos(b * ONE_DEG_IN_RAD);
+
 				skeleton.updateJointsCCD(point);
-			else
-			if (!mode)
+			}
+			else 
+			{
+				point.v[0] = 5 * sin(a * ONE_DEG_IN_RAD);
+				point.v[1] = 10 * cos(a * ONE_DEG_IN_RAD);
+				point.v[2] = 0;
+
 				skeleton.updateJoints(point);
+			}
 		}
 	}
 	

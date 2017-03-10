@@ -14,6 +14,7 @@ public:
 	Bone();
 	Bone(Mesh m, Bone* parent, mat4 initPosition);
 	Bone(Mesh m, Bone* parent, mat4 initPosition, bool root);
+	~Bone();
 	void addChild(Bone* child);
 	void drawBone(mat4 projection, mat4 view, mat4 modelGlobal, GLuint shaderID, EulerCamera cam);
 	void bendBone(GLfloat rotation);
@@ -66,6 +67,12 @@ Bone::Bone(Mesh m, Bone* parent, mat4 initPosition, bool root)
 	forward = vec4(0.0, 0.0, 1.0, 0.0);
 	orientation = quat_from_axis_rad(0, this->right.v[0], this->right.v[1], this->right.v[2]);
 	rotMatrix = identity_mat4();
+}
+
+Bone::~Bone()
+{
+	for (int i = 0; i < children.size(); i++)
+		delete children[i];
 }
 
 #pragma endregion
@@ -451,17 +458,22 @@ class Torso {
 public:
 	Torso();
 	Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger);
+	//~Torso();
 	void drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam);
 	void moveAnalytical(vec3 point);
 	void moveAnalytical3D(vec3 point);
 	void updateJoints(vec3 point);
 	void updateJointsCCD(vec3 point);
+	bool isUnstable(vec3 point);
 
 //private:
 	Bone* torso;
 	Arm left;
 	float theta1 = 0, theta2 = 0, theta3 = 0;
 	float l1, l2, l12, l22;
+
+	Bone* endEffector;
+	vec3 originalPosition;
 };
 
 Torso::Torso() {};
@@ -484,7 +496,14 @@ Torso::Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger)
 	l22 = length2(palmPos - elbowPos);
 	l1 = length(elbowPos - shoulderPos);
 	l2 = length(palmPos - elbowPos);
+	endEffector = left.hand.palm;
+	originalPosition = endEffector->getPosition();
 }
+
+//Torso::~Torso()
+//{
+//	delete torso;
+//}
 
 void Torso::drawTorso(mat4 view, mat4 projection, mat4 modelGlobal, GLuint shaderID, EulerCamera cam)
 {
@@ -581,13 +600,19 @@ void Torso::updateJoints(vec3 point)
 
 void Torso::updateJointsCCD(vec3 point)
 {
-	Bone* endEffector = left.hand.palm;
 	for (unsigned int i = 0; i < 50; i++)
 	{
 		left.elbow->updateJoint(point, endEffector);
 		if (length(point - endEffector->getPosition()) < 0.1f)
 			break;
 	}
+}
+
+bool Torso::isUnstable(vec3 point)
+{
+	if ((length(point - endEffector->getPosition()) > 2.0f) && endEffector->getPosition() != originalPosition)
+		return true;	
+	return false;
 }
 
 #pragma endregion
