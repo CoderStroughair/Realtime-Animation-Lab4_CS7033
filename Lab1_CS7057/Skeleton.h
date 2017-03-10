@@ -19,8 +19,7 @@ public:
 	void bendBone(GLfloat rotation);
 	void rollBone(GLfloat rotation);
 	void pivotBone(GLfloat rotation);
-	void bendPivotBone(GLfloat rot1, GLfloat rot2);
-	void pivotBendBone(GLfloat rot1, GLfloat rot2);
+	void updateJoint(vec3 point, Bone* endEffector);
 	mat4 getTransformMatrix();
 	vec3 getPosition();
 	bool initialised = false;
@@ -134,24 +133,23 @@ void Bone::pivotBone(GLfloat rotation)
 	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
 }
 
-void Bone::bendPivotBone(GLfloat rot1, GLfloat rot2)
+void Bone::updateJoint(vec3 point, Bone* endEffector)
 {
-	versor quat = quat_from_axis_rad(rot1, this->right.v[0], this->right.v[1], this->right.v[2]) * quat_from_axis_rad(rot2, this->up.v[0], this->up.v[1], this->up.v[2]);
-	orientation = orientation * quat;
-	this->rotMatrix = quat_to_mat4(this->orientation);
-	this->forward = this->rotMatrix * vec4(1.0f, 0.0f, 0.0f, 0.0f);
-	this->right = this->rotMatrix * vec4(0.0f, 0.0f, 1.0f, 0.0f);
-	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
-}
+	vec3 bonePosition = getPosition();
+	vec3 currDirection = endEffector->getPosition() - bonePosition;
+	vec3 newDirection = point - bonePosition;
+	float angle = acosf(dot(normalise(currDirection), normalise(newDirection)));
+	vec3 axis = cross(normalise(currDirection), normalise(newDirection));
 
-void Bone::pivotBendBone(GLfloat rot1, GLfloat rot2)
-{
-	versor quat = quat_from_axis_rad(rot2, this->up.v[0], this->up.v[1], this->up.v[2]) * quat_from_axis_rad(rot1, this->right.v[0], this->right.v[1], this->right.v[2]);
-	orientation = orientation * quat;
-	this->rotMatrix = quat_to_mat4(this->orientation);
-	this->forward = this->rotMatrix * vec4(1.0f, 0.0f, 0.0f, 0.0f);
-	this->right = this->rotMatrix * vec4(0.0f, 0.0f, 1.0f, 0.0f);
-	this->up = this->rotMatrix * vec4(0.0f, 1.0f, 0.0f, 0.0f);
+	if (angle > 0.1f * ONE_DEG_IN_RAD)
+	{
+		versor quat = quat_from_axis_rad(angle, axis.v[0], axis.v[1], axis.v[2]);
+		orientation = orientation * quat;
+		this->rotMatrix = quat_to_mat4(this->orientation);
+
+		if (parent)
+			parent->updateJoint(point, endEffector);
+	}
 }
 
 #pragma endregion
@@ -172,6 +170,8 @@ vec3 Bone::getPosition()
 		global = parent->getTransformMatrix();
 	return global * localTransform * vec4(0.0, 0.0, 0.0, 1.0);
 }
+
+
 #pragma endregion
 
 #pragma region HAND
@@ -581,7 +581,13 @@ void Torso::updateJoints(vec3 point)
 
 void Torso::updateJointsCCD(vec3 point)
 {
-	vec3 shoulderPos = left.shoulderXY->getPosition();
-	vec3 position = point - shoulderPos;
+	Bone* endEffector = left.hand.palm;
+	for (unsigned int i = 0; i < 50; i++)
+	{
+		left.elbow->updateJoint(point, endEffector);
+		if (length(point - endEffector->getPosition()) < 0.1f)
+			break;
+	}
 }
+
 #pragma endregion

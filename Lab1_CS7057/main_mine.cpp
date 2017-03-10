@@ -14,6 +14,7 @@ const float width = 900, height = 900;
 ----------------------------------------------------------------------------*/
 
 Mesh cubeMapID, cubeID, palmID;
+Mesh boneID, torsoID;
 
 /*----------------------------------------------------------------------------
 							CAMERA VARIABLES
@@ -68,11 +69,10 @@ void init()
 	cubeMapID.initCubeMap(vertices, 36, "desert");
 	cubeID.init(CUBE_MESH);
 	palmID.init(PALM_MESH);
-	Mesh boneID, torsoID;
 	boneID.init(BONE_MESH);
 	torsoID.init(TORSO_MESH);
 	skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
-	skeleton.updateJointsCCD(point);
+	skeleton.updateJoints(point);
 }
 
 void display() 
@@ -118,9 +118,10 @@ void updateScene() {
 			point.v[0] += 0.1 * xaxis;
 			point.v[1] += 0.1 * yaxis;
 			point.v[2] += 0.1 * zaxis;
-			//if (mode)
-			//	skeleton.updateJointsCCD(point);
-			//else
+			if (mode)
+				skeleton.updateJointsCCD(point);
+			else
+			if (!mode)
 				skeleton.updateJoints(point);
 		}
 	}
@@ -249,6 +250,7 @@ void specialKeypressUp(int key, int x, int y){
 		pitCam = 0;
 		break;
 	case(GLUT_KEY_F1):
+		skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
 		mode = !mode;
 		break;
 	case(GLUT_KEY_F2):

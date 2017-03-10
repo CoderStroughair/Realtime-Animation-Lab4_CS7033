@@ -43,8 +43,8 @@ b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(53): warning 
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(239): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(300): warning C4305: 'initializing': truncation from 'double' to 'float'
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(305): warning C4305: 'argument': truncation from 'double' to 'float'
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(87): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(93): warning C4305: 'argument': truncation from 'double' to 'float'
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(86): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(92): warning C4305: 'argument': truncation from 'double' to 'float'
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(210): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(215): warning C4305: 'argument': truncation from 'double' to 'float'
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(223): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
@@ -85,15 +85,15 @@ b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(437): warning
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(474): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(525): warning C4305: '+=': truncation from 'double' to 'float'
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(530): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(59): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(60): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(82): warning C4244: 'argument': conversion from 'const float' to 'GLsizei', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(118): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(119): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(120): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(274): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(280): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(301): warning C4305: 'argument': truncation from 'double' to 'float'
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(320): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(326): warning C4305: 'argument': truncation from 'double' to 'float'
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(276): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(282): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(303): warning C4305: 'argument': truncation from 'double' to 'float'
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(322): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+b:\animation\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(328): warning C4305: 'argument': truncation from 'double' to 'float'
   Lab1_CS7057.vcxproj -> B:\Animation\Realtime-Animation-Lab4_CS7033\Debug\Lab4.exe
   Lab1_CS7057.vcxproj -> B:\Animation\Realtime-Animation-Lab4_CS7033\Debug\Lab4.pdb (Full PDB)
