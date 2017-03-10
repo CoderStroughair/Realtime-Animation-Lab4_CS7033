@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Antons_maths_funcs.h" />
+    <ClInclude Include="Bezier.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Particle.h" />

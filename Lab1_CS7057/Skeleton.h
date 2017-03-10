@@ -496,7 +496,7 @@ Torso::Torso(Mesh mTorso, Mesh mArm, Mesh mJoint, Mesh mPalm, Mesh mFinger)
 	l22 = length2(palmPos - elbowPos);
 	l1 = length(elbowPos - shoulderPos);
 	l2 = length(palmPos - elbowPos);
-	endEffector = left.hand.palm;
+	endEffector = left.hand.index[2];
 	originalPosition = endEffector->getPosition();
 }
 
@@ -610,7 +610,8 @@ void Torso::updateJointsCCD(vec3 point)
 
 bool Torso::isUnstable(vec3 point)
 {
-	if ((length(point - endEffector->getPosition()) > 2.0f) && endEffector->getPosition() != originalPosition)
+
+	if ((length(point - endEffector->getPosition()) > 5.0f) && (endEffector->getPosition() != originalPosition))
 		return true;	
 	return false;
 }

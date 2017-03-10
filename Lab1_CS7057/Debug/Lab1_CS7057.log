@@ -1,3 +1,105 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Lab1_CS7057.vcxproj, Lab2_CS7055.vcxproj, Lab3.vcxproj, Lab3_CS7055.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Lab1_CS7057.vcxproj -> B:\Animation\Realtime-Animation-Lab4_CS7033\Debug\Lab4.exe
-  Lab1_CS7057.vcxproj -> B:\Animation\Realtime-Animation-Lab4_CS7033\Debug\Lab4.pdb (Full PDB)
+  main_mine.cpp
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(409): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(460): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(464): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(659): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(661): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(662): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(663): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(664): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(671): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(673): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(674): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(675): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(676): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(683): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(685): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(686): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(687): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(688): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(731): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(732): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(748): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(749): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(750): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(751): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(756): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(796): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(822): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(832): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(833): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\antons_maths_funcs.h(834): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(2980): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(2980): warning C4305: 'initializing': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(5959): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(5959): warning C4305: 'initializing': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(8938): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\teapot.h(8938): warning C4305: 'initializing': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\utilities.h(248): warning C4018: '<': signed/unsigned mismatch
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(33): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(239): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(300): warning C4305: 'initializing': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\particle.h(305): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(74): warning C4018: '<': signed/unsigned mismatch
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(93): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(99): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(217): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(222): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(230): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(235): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(243): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(248): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(256): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(261): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(269): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(274): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(296): warning C4305: '+=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(299): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(308): warning C4305: '-=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(311): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(325): warning C4305: '+=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(328): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(329): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(330): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(331): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(332): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(341): warning C4305: '-=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(344): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(345): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(346): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(347): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(348): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(363): warning C4305: '+=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(366): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(375): warning C4305: '-=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(378): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(393): warning C4305: '+=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(394): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(402): warning C4305: '-=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(403): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(441): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(443): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(444): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(486): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(544): warning C4305: '+=': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\skeleton.h(549): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(52): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(53): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(54): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(70): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(92): warning C4244: 'argument': conversion from 'const float' to 'GLsizei', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(143): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(144): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(145): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(161): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(162): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(317): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(323): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(344): warning C4305: 'argument': truncation from 'double' to 'float'
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(363): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+u:\animation labs\realtime-animation-lab4_cs7033\lab1_cs7057\main_mine.cpp(369): warning C4305: 'argument': truncation from 'double' to 'float'
+  Lab1_CS7057.vcxproj -> U:\Animation Labs\Realtime-Animation-Lab4_CS7033\Debug\Lab4.exe
+  Lab1_CS7057.vcxproj -> U:\Animation Labs\Realtime-Animation-Lab4_CS7033\Debug\Lab4.pdb (Full PDB)

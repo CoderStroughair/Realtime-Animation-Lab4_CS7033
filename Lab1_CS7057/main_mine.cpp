@@ -6,6 +6,7 @@
 #include "Particle.h"
 #include "Collision.h"
 #include "Skeleton.h"
+#include "Bezier.h"
 using namespace std;
 
 const float width = 900, height = 900;
@@ -45,8 +46,17 @@ Torso skeleton;
 
 vec3 point = vec3(6.0, 5.0, 0.0);
 float xaxis = 0, yaxis = 0, zaxis = 0;
-float a = 0, b = 0;
+float a = 0, b = 0, t = 0;
 
+Bezier curveArray[] = { 
+	Bezier(vec3(-15.0, -10.0, 0.0), vec3(-10.0, -15.0, 1.0), vec3(-3.0, 1.8, 1.0), vec3(-3.0, 1.2, 1.0)), 
+	Bezier(vec3(-10.0, -15.0, 0.0), vec3(-15.0, -10.0, 1.0), vec3(-3.0, 1.8, 1.0), vec3(-3.0, 1.2, 1.0)),
+	Bezier(vec3(-15.0, -10.0, 0.0), vec3(-15.0, 10.0, 6.0), vec3(-6.0, 10.8, 1.0), vec3(-3.0, 1.2, 1.0))
+};
+
+bool backwards = false;
+int currCurve = 0;
+int NUM_CURVES = 3;
 /*----------------------------------------------------------------------------
 						FUNCTION DEFINITIONS
 ----------------------------------------------------------------------------*/
@@ -115,8 +125,17 @@ void updateScene() {
 		update_text(textID, output.c_str());
 		if (!pause)
 		{
+			t += 0.01f;
 			a += 1.0f;
 			b += 1.0f;
+			if (t > 1)
+			{
+				t = 0;
+				backwards = !backwards;
+				currCurve++;
+				if (currCurve >= NUM_CURVES)
+					currCurve = 0;
+			}
 			if (a > 360)
 				a = 0;
 			if (b > 360)
@@ -124,15 +143,16 @@ void updateScene() {
 			point.v[0] = 5 * sin(a * ONE_DEG_IN_RAD);
 			point.v[1] = 5 * cos(a * ONE_DEG_IN_RAD) + 10 * sin(b * ONE_DEG_IN_RAD);
 			point.v[2] = 5 * cos(b * ONE_DEG_IN_RAD);
-			if (skeleton.isUnstable(point))
-			{
-				skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
-			}
+
 			if (mode)
 			{
-				point.v[0] = 5 * sin(a * ONE_DEG_IN_RAD);
-				point.v[1] = 5 * cos(a * ONE_DEG_IN_RAD) + 10 * sin(b * ONE_DEG_IN_RAD);
-				point.v[2] = 5 * cos(b * ONE_DEG_IN_RAD);
+				if (skeleton.isUnstable(point))
+				{
+					//cout << "Reinitialising..." << endl;
+					skeleton = Torso(torsoID, boneID, cubeID, palmID, cubeID);
+				}
+
+				point = curveArray[currCurve].calculatePosition(t);
 
 				skeleton.updateJointsCCD(point);
 			}
